@@ -1,0 +1,16 @@
+CREATE TABLE Person(
+    cf TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    surname TEXT NOT NULL,
+    birthday TEXT, -- Store as ISO 8601 formatted string
+    city TEXT
+);
+
+insertPerson:
+INSERT INTO Person (cf, name, surname, birthday, city) VALUES (?,?,?,?,?);
+
+selectAll:
+SELECT * FROM Person;
+
+clearPerson:
+DELETE FROM Person;
