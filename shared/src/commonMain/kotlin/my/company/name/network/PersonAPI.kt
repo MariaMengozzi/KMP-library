@@ -2,6 +2,8 @@ package my.company.name.network
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -9,10 +11,15 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
 import my.company.name.model.Person
 
-class PersonAPI (private val httpClient : HttpClient) {
-
+class PersonAPI (engine: HttpClientEngine) {
+    private val httpClient = HttpClient(engine) {
+        install(ContentNegotiation) {
+            json()
+        }
+    }
     suspend fun getPersons(): Result<List<Person>> {
         return try {
             val response: HttpResponse = httpClient.get("http://localhost:8080/persons/all") //LINK AL SERVER
@@ -29,11 +36,11 @@ class PersonAPI (private val httpClient : HttpClient) {
 
     suspend fun addPerson(person: Person): Result<Person> {
         return try {
-            val response: HttpResponse = httpClient.post("http://localhost:8080/persons") {
+            val response: HttpResponse = httpClient.post("/persons") {
                 contentType(ContentType.Application.Json)
                 setBody(person)
             }
-            if (response.status == HttpStatusCode.OK) {
+            if (response.status == HttpStatusCode.Created) {
                 val body = response.body<Person>()
                 Result.success(body)
             } else {

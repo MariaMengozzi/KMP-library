@@ -2,7 +2,6 @@
 
 Kotlin Multiplatform Library
 
-TUTORIAL - https://www.jetbrains.com/help/kotlin-multiplatform-dev/multiplatform-ktor-sqldelight.html#implement-an-api-service
 
 ### Publish to MavenCentral
 
