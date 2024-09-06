@@ -54,11 +54,15 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.koin.core)
+            implementation("co.touchlab:stately-common:2.0.5")
         }
 
         commonTest.dependencies {
             implementation(kotlin("test"))
             implementation("io.ktor:ktor-client-mock:3.0.0-beta-2")
+            implementation("io.insert-koin:koin-test:3.2.0")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+            implementation("co.touchlab:stately-common:2.0.5") //needed for iosSimulatorArm64, because koin use a old version of stately-common
         }
 
         androidMain.dependencies {

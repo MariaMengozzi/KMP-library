@@ -16,11 +16,24 @@ import my.company.name.model.Person
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
+import org.koin.test.KoinTest
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
+import org.koin.test.inject
+import kotlin.test.AfterTest
+import kotlin.test.BeforeTest
 
-class PersonAPITest {
+class PersonAPITest : KoinTest {
 
-    private val client = MockEngine {
-        request ->
+    private val apiService: PersonAPIImpl by inject()
+
+    private val client = HttpClient(MockEngine) {
+        engine {
+            addHandler { request ->
                 when (request.url.encodedPath) {
                     "/persons" -> {
                         assertEquals(HttpMethod.Post, request.method)
@@ -30,8 +43,9 @@ class PersonAPITest {
                         )
                         val body = request.body
                         try {
-                            val person = Json.decodeFromString<Person>(body.toByteReadPacket().readText())
-                            if (persons.contains(person)){
+                            val person =
+                                Json.decodeFromString<Person>(body.toByteReadPacket().readText())
+                            if (persons.contains(person)) {
                                 throw IllegalArgumentException("Person already exists")
                             }
                             respond(
@@ -39,28 +53,69 @@ class PersonAPITest {
                                 HttpStatusCode.Created,
                                 headers = headersOf(HttpHeaders.ContentType, "application/json")
                             )
-                        } catch (e: IllegalArgumentException){
+                        } catch (e: IllegalArgumentException) {
                             respond(e.message.orEmpty(), HttpStatusCode.BadRequest)
                         }
 
 
                     }
+
                     "/persons/all" -> {
                         assertEquals(HttpMethod.Get, request.method)
                         respond(
-                            Json.encodeToString(listOf(
-                            Person("1", "John", "Doe", LocalDate.parse("2000-01-01"), "New York"),
-                            Person("2", "Jane", "Smith", LocalDate.parse("1995-05-15"), "London")
-                            )),
+                            Json.encodeToString(
+                                listOf(
+                                    Person(
+                                        "1",
+                                        "John",
+                                        "Doe",
+                                        LocalDate.parse("2000-01-01"),
+                                        "New York"
+                                    ),
+                                    Person(
+                                        "2",
+                                        "Jane",
+                                        "Smith",
+                                        LocalDate.parse("1995-05-15"),
+                                        "London"
+                                    )
+                                )
+                            ),
                             HttpStatusCode.OK,
                             headers = headersOf(HttpHeaders.ContentType, "application/json")
                         )
                     }
+
                     else -> respond("", HttpStatusCode.NotFound)
                 }
             }
+        }
+        install(ContentNegotiation) {
+            json(Json {
+                ignoreUnknownKeys = true
+                prettyPrint = true
+            })
+        }
+    }
 
-    private val apiService = PersonAPIImpl(client)
+    private val networkModule = module {
+        single {
+            client
+        }
+        single {
+            PersonAPIImpl(get())
+        }
+    }
+    @BeforeTest
+    fun setUp() {
+        startKoin {
+            modules(networkModule)
+        }
+    }
+    @AfterTest
+    fun tearDown() {
+        stopKoin()
+    }
 
     @Test
     fun testAddPerson() = runBlocking {

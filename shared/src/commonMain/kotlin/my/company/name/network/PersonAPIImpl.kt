@@ -2,8 +2,7 @@ package my.company.name.network
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.engine.HttpClientEngine
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+
 import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
@@ -11,18 +10,16 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.serialization.kotlinx.json.json
 import my.company.name.model.Person
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 /**
  * A class representing the Person API.
  */
-class PersonAPIImpl (engine: HttpClientEngine): PersonApi {
-    private val httpClient = HttpClient(engine) {
-        install(ContentNegotiation) {
-            json()
-        }
-    }
+class PersonAPIImpl (private val httpClient: HttpClient): PersonApi {
+
+    //private val httpClient: HttpClient by inject() con koincomponent
 
     override suspend fun getPersons(): Result<List<Person>> {
         return try {
