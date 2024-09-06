@@ -60,7 +60,7 @@ class PersonAPITest {
                 }
             }
 
-    private val apiService = PersonAPI(client)
+    private val apiService = PersonAPIImpl(client)
 
     @Test
     fun testAddPerson() = runBlocking {
