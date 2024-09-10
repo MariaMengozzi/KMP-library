@@ -1,7 +1,6 @@
 package my.company.name.model.entity
 
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.decodeFromString
 import nl.adaptivity.xmlutil.serialization.XML
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -16,7 +15,7 @@ class PersonXMLTest {
             birthday = LocalDate.parse("2000-01-01").toString(),
             city = "Rome"
         )
-        val encoded = XML.encodeToString(person)
+        val encoded = XMLSerializer.personToXML(person)
 
         val output = "<person><cf>1234567890123</cf><name>John</name><surname>Doe</surname><birthday>2000-01-01</birthday><city>Rome</city></person>"
         assertEquals(encoded, output)
@@ -32,7 +31,7 @@ class PersonXMLTest {
             birthday = LocalDate.parse("2000-01-01").toString(),
             city = "Rome"
         )
-        val decoded : PersonXML = XML.decodeFromString(input)
+        val decoded : PersonXML = XMLSerializer.xmlToPerson(input)
 
         val output = "<person><cf>1234567890123</cf><name>John</name><surname>Doe</surname><birthday>2000-01-01</birthday><city>Rome</city></person>"
         assertEquals(decoded, person)

@@ -2,6 +2,7 @@ package my.company.name.model.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
 
@@ -20,3 +21,13 @@ data class PersonXML(
     @XmlChildrenName("city")
     val city: String
 )
+
+internal object XMLSerializer {
+    fun personToXML(person: PersonXML): String {
+        return XML.encodeToString(person)
+    }
+
+    fun xmlToPerson(xml: String): PersonXML {
+        return XML.decodeFromString(xml)
+    }
+}
