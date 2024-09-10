@@ -57,6 +57,8 @@ kotlin {
             implementation(libs.koin.core)
             implementation("co.touchlab:stately-common:2.0.5")
             implementation("io.realm.kotlin:library-base:2.0.0")
+            implementation(libs.xmlutil.core)
+            implementation(libs.xmlutil.serialization)
         }
 
         commonTest.dependencies {
