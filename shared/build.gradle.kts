@@ -74,6 +74,7 @@ kotlin {
             implementation(libs.sqldelight.android)
         }
 
+        val androidUnitTest by getting {}
         androidUnitTest.dependencies {
             implementation("app.cash.sqldelight:sqlite-driver:2.0.0")
         }
