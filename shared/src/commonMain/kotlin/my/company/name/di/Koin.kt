@@ -7,7 +7,10 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.http.URLBuilder
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import kotlinx.serialization.json.Json
+import my.company.name.model.entity.PersonRealm
 import my.company.name.network.PersonAPIImpl
 import my.company.name.network.PersonApi
 import org.koin.core.context.startKoin
@@ -21,7 +24,10 @@ import kotlin.math.sin
  * the HTTP client for making network requests.
  */
 fun initKoin() = startKoin {
-    modules(networkModule)
+    modules(
+        networkModule,
+        realmModule
+    )
 }
 
 /**
@@ -57,4 +63,14 @@ private val networkModule = module {
         PersonAPIImpl(get())
     }
 
+}
+
+private val realmModule = module {
+    single {
+        val config = RealmConfiguration.Builder(schema = setOf(PersonRealm::class))
+            .name("person-realm")
+            .build()
+
+        Realm.open(config)
+    }
 }

@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.sqldelight.library)
     alias(libs.plugins.kotlinxSerialization)
     id("convention.publication")
+    id("io.realm.kotlin") version "2.0.0"
 }
 
 group = "my.company.name"
@@ -55,6 +56,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.koin.core)
             implementation("co.touchlab:stately-common:2.0.5")
+            implementation("io.realm.kotlin:library-base:2.0.0")
         }
 
         commonTest.dependencies {
@@ -63,6 +65,7 @@ kotlin {
             implementation("io.insert-koin:koin-test:3.2.0")
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
             implementation("co.touchlab:stately-common:2.0.5") //needed for iosSimulatorArm64, because koin use a old version of stately-common
+            implementation("io.realm.kotlin:library-base:2.0.0")
         }
 
         androidMain.dependencies {
