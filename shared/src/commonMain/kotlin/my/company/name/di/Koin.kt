@@ -4,6 +4,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
+import io.ktor.http.ContentType
 import io.ktor.http.URLBuilder
 import io.ktor.http.takeFrom
 import io.ktor.serialization.kotlinx.json.json
@@ -13,6 +14,7 @@ import kotlinx.serialization.json.Json
 import my.company.name.model.entity.PersonRealm
 import my.company.name.network.PersonAPIImpl
 import my.company.name.network.PersonApi
+import my.company.name.serializer.NetworkXMLSerializer
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import kotlin.math.sin
@@ -43,11 +45,14 @@ private val networkModule = module {
                 requestTimeoutMillis = 15_000
             }
             install(ContentNegotiation) {
+                register(ContentType.Application.Xml, NetworkXMLSerializer()) //custom xml serializer
+            }
+            /*install(ContentNegotiation) {
                 json(Json {
                     ignoreUnknownKeys = true
                     prettyPrint = true
                 })
-            }
+            }*/
             /*install(Logging) {
                 level = LogLevel.ALL
                 logger = object : Logger {

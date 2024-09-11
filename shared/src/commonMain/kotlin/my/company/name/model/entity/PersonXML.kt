@@ -2,6 +2,7 @@ package my.company.name.model.entity
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.ListSerializer
 import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
@@ -29,5 +30,13 @@ internal object XMLSerializer {
 
     fun xmlToPerson(xml: String): PersonXML {
         return XML.decodeFromString(xml)
+    }
+
+    fun personsListToXML(personsList: List<PersonXML>): String {
+        return XML.encodeToString(ListSerializer(PersonXML.serializer()), personsList)
+    }
+
+    fun xmlToPersonsList(xml: String): List<PersonXML> {
+        return XML.decodeFromString(ListSerializer(PersonXML.serializer()), xml)
     }
 }
