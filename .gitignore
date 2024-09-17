@@ -15,4 +15,4 @@ Pods/
 *.jks
 *yarn.lock
 test-realm
-test-realm.lock
+*/test-realm.lock
