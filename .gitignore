@@ -14,3 +14,5 @@ xcuserdata/
 Pods/
 *.jks
 *yarn.lock
+test-realm
+test-realm.lock
