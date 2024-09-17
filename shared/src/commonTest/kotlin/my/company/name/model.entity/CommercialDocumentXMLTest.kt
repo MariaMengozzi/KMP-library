@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDateTime
 import nl.adaptivity.xmlutil.serialization.XML
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 
 class CommercialDocumentXMLTest {
     val dataConfig = ConfigurationDCDataXML(
@@ -202,7 +203,40 @@ class CommercialDocumentXMLTest {
         assertEquals(xml, encoded)
     }
 
+    @Test
+    fun testSHA256HashEquality() {
+        val hash1 = document.sha256HashBase64()
+        val hash2 = document.sha256HashBase64()
+        assertEquals(hash1, hash2)
+    }
 
+    @Test
+    fun testSHA256HashNotEquals() {
+        val hash1 = document.sha256HashBase64()
+
+        val merchant = MerchantXML(
+            "12443",
+            "esercenteDiverso",
+            RegistryXML(
+                name = "Luca",
+                surname = "Bianchi",
+                site = SiteXML(
+                    "Via Roma",
+                    "123",
+                    "00100",
+                    "Roma",
+                    "RM",
+                    "Italia",
+                    "0"
+                )
+            )
+        )
+        val document2 = CommercialDocumentXML(dataConfig, merchant, cd)
+        assertNotEquals(document, document2)
+
+        val hash2 = document2.sha256HashBase64()
+        assertNotEquals(hash1, hash2)
+    }
 
     @Test
     fun testLista(){

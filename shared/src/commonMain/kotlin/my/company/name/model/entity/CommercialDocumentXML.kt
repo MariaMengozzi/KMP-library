@@ -1,10 +1,14 @@
 package my.company.name.model.entity
 
+import io.ktor.util.encodeBase64
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import nl.adaptivity.xmlutil.serialization.XML
 import nl.adaptivity.xmlutil.serialization.XmlChildrenName
 import nl.adaptivity.xmlutil.serialization.XmlSerialName
+import okio.ByteString
+import okio.ByteString.Companion.encodeUtf8
 
 @Serializable
 @SerialName("CommercialDocument")
@@ -13,7 +17,17 @@ data class CommercialDocumentXML (
     val configurationData : ConfigurationDCDataXML,
     val merchant : MerchantXML,
     val commercialDocumentData: CommercialDocumentDataXML,
-)
+){
+    fun sha256HashBase64() : String {
+        val serializedPerson = XML.encodeToString(CommercialDocumentXML.serializer(), this)
+
+        // Converte la stringa serializzata in una ByteString e calcola l'hash SHA-256
+        val hash: ByteString = serializedPerson.encodeUtf8().sha256()
+
+        // Converte l'hash in una stringa esadecimale e la ritorna
+        return hash.hex().encodeBase64()
+    }
+}
 
 // ---- configuration data ----
 @Serializable

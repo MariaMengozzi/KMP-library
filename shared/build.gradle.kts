@@ -59,6 +59,7 @@ kotlin {
             implementation("io.realm.kotlin:library-base:2.0.0")
             implementation(libs.xmlutil.core)
             implementation(libs.xmlutil.serialization)
+            implementation(libs.squareup.okio)
         }
 
         commonTest.dependencies {

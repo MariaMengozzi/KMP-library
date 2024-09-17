@@ -12,7 +12,7 @@ sqldelight = "2.0.2"
 sqldelight-js = "2.0.0-alpha05"
 monitor = "1.7.2"
 xmlutil = "0.86.3"
-
+okio = "3.6.0"
 [libraries]
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
@@ -38,6 +38,7 @@ monitor = { group = "androidx.test", name = "monitor", version.ref = "monitor" }
 
 xmlutil-core = { module = "io.github.pdvrieze.xmlutil:core", version.ref = "xmlutil" }
 xmlutil-serialization = { module = "io.github.pdvrieze.xmlutil:serialization", version.ref = "xmlutil" }
+squareup-okio = { group = "com.squareup.okio", name = "okio", version.ref = "okio" }
 
 [plugins]
 
