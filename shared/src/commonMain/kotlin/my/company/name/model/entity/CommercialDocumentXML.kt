@@ -19,10 +19,10 @@ data class CommercialDocumentXML (
     val commercialDocumentData: CommercialDocumentDataXML,
 ){
     fun sha256HashBase64() : String {
-        val serializedPerson = XML.encodeToString(CommercialDocumentXML.serializer(), this)
+        val serializedDC = XML.encodeToString(CommercialDocumentXML.serializer(), this)
 
         // Converte la stringa serializzata in una ByteString e calcola l'hash SHA-256
-        val hash: ByteString = serializedPerson.encodeUtf8().sha256()
+        val hash: ByteString = serializedDC.encodeUtf8().sha256()
 
         // Converte l'hash in una stringa esadecimale e la ritorna
         return hash.hex().encodeBase64()
