@@ -145,13 +145,13 @@ data class LotteryDataXML (
 data class SummaryXML (
     @XmlChildrenName("IVA")
     @SerialName("IVA")
-    val iva : IvaXML? = null, //TODO
+    val iva : IvaXML? = null,
     @XmlChildrenName("Natura")
     @SerialName("Natura")
-    val nature : String? = null,//TODO
+    val nature : String? = null,
     @XmlChildrenName("VentilazioneIVA")
     @SerialName("VentilazioneIVA")
-    val vatVentilation : String? = null, //TODO
+    val vatVentilation : String? = null,
     @XmlChildrenName("AmmontareComplessivo")
     @SerialName("AmmontareComplessivo")
     val totalAmount : Float,
@@ -295,10 +295,10 @@ data class TaxableElementsXML (
     val totalAmountAfterDiscount : String,
     @XmlChildrenName("IVA")
     @SerialName("IVA")
-    val iva : IvaXML? = null, //TODO
+    val iva : IvaXML? = null,
     @XmlChildrenName("Natura")
     @SerialName("Natura")
-    val nature : String? = null,//TODO
+    val nature : String? = null,
     @XmlChildrenName("VentilazioneIVA")
     @SerialName("VentilazioneIVA")
     val vatVentilation : String? = null,
